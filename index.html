@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Vince</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --text: rgba(255,255,255,.96);
+  --secondary: rgba(255,255,255,.58);
+  --glass: rgba(255,255,255,.075);
+  --stroke: rgba(255,255,255,.16);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  color: var(--text);
+
+  background:
+    linear-gradient(
+      180deg,
+      #111722 0%,
+      #080b12 45%,
+      #030405 100%
+    );
+}
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.background {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.blur {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: .5;
+  animation: floating 12s ease-in-out infinite alternate;
+}
+
+.blur1 {
+  width: 400px;
+  height: 400px;
+  left: -170px;
+  top: -160px;
+  background: #754cff;
+}
+
+.blur2 {
+  width: 420px;
+  height: 420px;
+  right: -210px;
+  top: 25%;
+  background: #00c8ff;
+  animation-delay: -5s;
+}
+
+.blur3 {
+  width: 400px;
+  height: 400px;
+  left: 25%;
+  bottom: -250px;
+  background: #ff4f9f;
+  animation-delay: -8s;
+}
+
+@keyframes floating {
+
+  from {
+    transform:
+      translate3d(-10px,-10px,0)
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate3d(30px,35px,0)
+      scale(1.14);
+  }
+
+}
+
+/* =========================================
+   EDGE LIGHT
+========================================= */
+
+.edge-light {
+  position: fixed;
+  z-index: 50;
+
+  inset: 4px;
+
+  border-radius: 29px;
+
+  pointer-events: none;
+
+  padding: 2px;
+
+  background:
+
+    conic-gradient(
+      from 0deg,
+      rgba(100,60,255,.1),
+      #795cff,
+      #24caff,
+      #55ffd1,
+      #ffe86d,
+      #ff5ca6,
+      #a04fff,
+      rgba(100,60,255,.1)
+    );
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask-composite: exclude;
+
+  opacity: .5;
+
+  animation:
+    edgeHue 7s linear infinite;
+}
+
+@keyframes edgeHue {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* =========================================
+   APP
+========================================= */
+
+.app {
+  position: relative;
+  z-index: 5;
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  padding:
+    max(env(safe-area-inset-top),20px)
+    18px
+    max(env(safe-area-inset-bottom),18px);
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.identity {
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.miniOrb {
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background:
+
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(255,255,255,.9),
+      transparent 20%
+    ),
+
+    conic-gradient(
+      #7556ff,
+      #2ac9ff,
+      #52ffd0,
+      #ffe263,
+      #ff619f,
+      #8c55ff,
+      #7556ff
+    );
+
+  box-shadow:
+
+    inset 0 0 15px rgba(255,255,255,.4),
+
+    0 0 22px rgba(90,120,255,.45);
+}
+
+.name {
+
+  font-size: 17px;
+  font-weight: 650;
+
+  letter-spacing: -.3px;
+}
+
+.status {
+
+  font-size: 11px;
+
+  color:
+    rgba(255,255,255,.48);
+
+  margin-top: 1px;
+}
+
+.reset {
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid rgba(255,255,255,.16);
+
+  background:
+    rgba(255,255,255,.07);
+
+  color: white;
+
+  font-size: 21px;
+
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+
+  cursor: pointer;
+
+  transition: .18s;
+}
+
+.reset:active {
+  transform: scale(.9);
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.content {
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  overflow-y: auto;
+
+  scrollbar-width: none;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================
+   ORB
+========================================= */
+
+.orbSpace {
+
+  min-height: 245px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+}
+
+.orbGlow {
+
+  position: absolute;
+
+  width: 185px;
+  height: 185px;
+
+  border-radius: 50%;
+
+  background:
+
+    conic-gradient(
+      #7556ff,
+      #27caff,
+      #55ffd0,
+      #ffeb75,
+      #ff5ea5,
+      #9650ff,
+      #7556ff
+    );
+
+  filter: blur(38px);
+
+  opacity: .47;
+
+  animation:
+    spin 8s linear infinite;
+}
+
+@keyframes spin {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+.orb {
+
+  position: relative;
+
+  width: 150px;
+  height: 150px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  border:
+    1px solid rgba(255,255,255,.35);
+
+  background:
+
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.22) 9%,
+      transparent 27%
+    ),
+
+    radial-gradient(
+      circle at 78% 78%,
+      rgba(0,190,255,.75),
+      transparent 42%
+    ),
+
+    radial-gradient(
+      circle at 20% 75%,
+      rgba(255,60,165,.72),
+      transparent 40%
+    ),
+
+    conic-gradient(
+      from 40deg,
+      #6d3cff,
+      #1fcaff,
+      #51ffd1,
+      #ffe46c,
+      #ff5b9f,
+      #8b44ff,
+      #6d3cff
+    );
+
+  box-shadow:
+
+    inset 0 0 35px
+      rgba(255,255,255,.28),
+
+    inset 0 -25px 40px
+      rgba(0,0,0,.15),
+
+    0 0 80px
+      rgba(80,120,255,.25);
+
+  animation:
+    orbIdle 4s ease-in-out infinite,
+    hue 12s linear infinite;
+}
+
+.orb::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 8px;
+
+  border-radius: inherit;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.4),
+      rgba(255,255,255,.04) 35%,
+      rgba(255,255,255,.12) 70%,
+      rgba(255,255,255,.28)
+    );
+
+  backdrop-filter: blur(18px);
+}
+
+@keyframes orbIdle {
+
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translateY(-8px)
+      scale(1.025);
+  }
+
+}
+
+@keyframes hue {
+
+  to {
+    filter:
+      hue-rotate(360deg);
+  }
+
+}
+
+.orb.listening {
+
+  animation:
+
+    listening
+    .9s
+    ease-in-out
+    infinite,
+
+    hue
+    5s
+    linear
+    infinite;
+}
+
+@keyframes listening {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.11);
+  }
+
+}
+
+/* =========================================
+   TEXT
+========================================= */
+
+h1 {
+
+  font-size:
+    clamp(30px,6vw,40px);
+
+  font-weight: 660;
+
+  letter-spacing: -1.5px;
+
+  text-align: center;
+}
+
+.answer {
+
+  width: min(620px,92vw);
+
+  margin-top: 14px;
+
+  text-align: center;
+
+  font-size: 17px;
+
+  line-height: 1.52;
+
+  color:
+    rgba(255,255,255,.74);
+
+  white-space: pre-wrap;
+}
+
+/* =========================================
+   THINKING
+========================================= */
+
+.thinking {
+
+  height: 26px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.thinking span {
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  opacity: .35;
+
+  animation:
+    thinking
+    .8s
+    ease-in-out
+    infinite alternate;
+}
+
+.thinking span:nth-child(2) {
+  animation-delay: .15s;
+}
+
+.thinking span:nth-child(3) {
+  animation-delay: .3s;
+}
+
+@keyframes thinking {
+
+  to {
+    transform:
+      translateY(-7px);
+
+    opacity: 1;
+  }
+
+}
+
+/* =========================================
+   SUGGESTIONS
+========================================= */
+
+.suggestions {
+
+  margin-top: 25px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap: 9px;
+}
+
+.suggestion {
+
+  border:
+
+    1px solid
+    rgba(255,255,255,.15);
+
+  background:
+
+    rgba(255,255,255,.065);
+
+  backdrop-filter:
+    blur(30px)
+    saturate(160%);
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(160%);
+
+  color:
+    rgba(255,255,255,.88);
+
+  border-radius: 999px;
+
+  padding: 11px 15px;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: .18s;
+}
+
+.suggestion:active {
+
+  transform: scale(.95);
+
+  background:
+    rgba(255,255,255,.13);
+}
+
+/* =========================================
+   BOTTOM
+========================================= */
+
+.bottom {
+
+  width:
+    min(700px,100%);
+
+  margin:
+    12px auto 0;
+}
+
+.inputGlass {
+
+  min-height: 60px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    7px 8px 7px 18px;
+
+  border-radius: 31px;
+
+  border:
+
+    1px solid
+    rgba(255,255,255,.18);
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.13),
+      rgba(255,255,255,.05)
+    );
+
+  backdrop-filter:
+    blur(35px)
+    saturate(180%);
+
+  -webkit-backdrop-filter:
+    blur(35px)
+    saturate(180%);
+
+  box-shadow:
+
+    inset 0 1px 0
+      rgba(255,255,255,.18),
+
+    0 15px 50px
+      rgba(0,0,0,.28);
+}
+
+input {
+
+  flex: 1;
+
+  min-width: 0;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  font-family: inherit;
+
+  font-size: 16px;
+
+  color: white;
+}
+
+input::placeholder {
+
+  color:
+    rgba(255,255,255,.38);
+}
+
+.circle {
+
+  width: 45px;
+  height: 45px;
+
+  flex:
+    0 0 45px;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition: .18s;
+}
+
+.circle:active {
+  transform: scale(.9);
+}
+
+.mic {
+
+  border:
+
+    1px solid
+    rgba(255,255,255,.13);
+
+  color: white;
+
+  background:
+    rgba(255,255,255,.07);
+}
+
+.send {
+
+  border: 0;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      white,
+      rgba(218,224,255,.83)
+    );
+
+  color: #11141b;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-height:700px) {
+
+  .orbSpace {
+
+    min-height: 185px;
+  }
+
+  .orb {
+
+    width: 115px;
+    height: 115px;
+  }
+
+  .orbGlow {
+
+    width: 140px;
+    height: 140px;
+  }
+
+  h1 {
+    font-size: 29px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background">
+
+  <div class="blur blur1"></div>
+  <div class="blur blur2"></div>
+  <div class="blur blur3"></div>
+
+</div>
+
+<div class="edge-light"></div>
+
+<div class="app">
+
+<header class="header">
+
+  <div class="identity">
+
+    <div class="miniOrb"></div>
+
+    <div>
+
+      <div class="name">
+        Vince
+      </div>
+
+      <div
+        class="status"
+        id="status">
+        Disponible
+      </div>
+
+    </div>
+
+  </div>
+
+  <button
+    class="reset"
+    onclick="resetConversation()">
+    +
+  </button>
+
+</header>
+
+
+<main
+  class="content"
+  id="content">
+
+  <div class="orbSpace">
+
+    <div
+      class="orbGlow">
+    </div>
+
+    <div
+      class="orb"
+      id="orb"
+      onclick="startListening()">
+    </div>
+
+  </div>
+
+  <h1 id="headline">
+    Bonjour.
+  </h1>
+
+  <div
+    class="answer"
+    id="answer">
+    Qu’est-ce que je peux faire pour toi ?
+  </div>
+
+  <div class="suggestions">
+
+    <button
+      class="suggestion"
+      onclick="ask('Explique-moi quelque chose de fascinant')">
+
+      Surprends-moi
+
+    </button>
+
+    <button
+      class="suggestion"
+      onclick="ask('Donne-moi une idée de projet amusant')">
+
+      Une idée
+
+    </button>
+
+    <button
+      class="suggestion"
+      onclick="ask('Que peux-tu faire pour moi ?')">
+
+      Que peux-tu faire ?
+
+    </button>
+
+  </div>
+
+</main>
+
+
+<footer class="bottom">
+
+  <div class="inputGlass">
+
+    <input
+      id="input"
+      type="text"
+      autocomplete="off"
+      placeholder="Demander à Vince…">
+
+    <button
+      class="circle mic"
+      onclick="startListening()"
+      aria-label="Micro">
+
+      ◉
+
+    </button>
+
+    <button
+      class="circle send"
+      onclick="sendMessage()"
+      aria-label="Envoyer">
+
+      ↑
+
+    </button>
+
+  </div>
+
+</footer>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const input =
+  document.getElementById("input");
+
+const answer =
+  document.getElementById("answer");
+
+const headline =
+  document.getElementById("headline");
+
+const orb =
+  document.getElementById("orb");
+
+const status =
+  document.getElementById("status");
+
+const content =
+  document.getElementById("content");
+
+
+/* =========================================
+   CONVERSATION
+========================================= */
+
+let conversation = [];
+
+let busy = false;
+
+
+/* =========================================
+   ENTER
+========================================= */
+
+input.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "Enter") {
+
+      event.preventDefault();
+
+      sendMessage();
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   SEND MESSAGE
+========================================= */
+
+async function sendMessage() {
+
+  if (busy) return;
+
+  const message =
+    input.value.trim();
+
+  if (!message) return;
+
+  input.value = "";
+
+  busy = true;
+
+  headline.textContent =
+    "Vince";
+
+  status.textContent =
+    "Réfléchit…";
+
+  orb.classList.add(
+    "listening"
+  );
+
+  answer.innerHTML = `
+
+    <div class="thinking">
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </div>
+
+  `;
+
+
+  conversation.push({
+
+    role: "user",
+
+    content: message
+
+  });
+
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              messages:
+                conversation
+
+            })
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+
+        data.error ||
+        "Erreur serveur"
+
+      );
+
+    }
+
+
+    const reply =
+      data.answer;
+
+
+    conversation.push({
+
+      role:
+        "assistant",
+
+      content:
+        reply
+
+    });
+
+
+    orb.classList.remove(
+      "listening"
+    );
+
+    status.textContent =
+      "Disponible";
+
+
+    await typeText(
+      reply
+    );
+
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    orb.classList.remove(
+      "listening"
+    );
+
+    status.textContent =
+      "Connexion impossible";
+
+    answer.textContent =
+      "Je n’arrive pas à joindre mon intelligence. Vérifie la configuration du serveur.";
+
+  }
+
+  finally {
+
+    busy = false;
+
+  }
+
+}
+
+
+/* =========================================
+   TYPE EFFECT
+========================================= */
+
+async function typeText(text) {
+
+  answer.textContent = "";
+
+  /*
+     Pour éviter d'attendre plusieurs
+     secondes sur les grosses réponses,
+     on affiche plus vite lorsque le
+     texte est long.
+  */
+
+  let speed = 12;
+
+  if (text.length > 700)
+    speed = 3;
+
+  if (text.length > 1500)
+    speed = 1;
+
+
+  for (
+    let i = 0;
+    i < text.length;
+    i++
+  ) {
+
+    answer.textContent +=
+      text[i];
+
+    if (i % 4 === 0) {
+
+      content.scrollTop =
+        content.scrollHeight;
+
+    }
+
+    await wait(speed);
+
+  }
+
+}
+
+
+function wait(ms) {
+
+  return new Promise(
+
+    resolve =>
+
+      setTimeout(
+        resolve,
+        ms
+      )
+
+  );
+
+}
+
+
+/* =========================================
+   SUGGESTIONS
+========================================= */
+
+function ask(text) {
+
+  input.value =
+    text;
+
+  sendMessage();
+
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+function resetConversation() {
+
+  conversation = [];
+
+  input.value = "";
+
+  orb.classList.remove(
+    "listening"
+  );
+
+  headline.textContent =
+    "Bonjour.";
+
+  answer.textContent =
+    "Qu’est-ce que je peux faire pour toi ?";
+
+  status.textContent =
+    "Disponible";
+
+}
+
+
+/* =========================================
+   MICRO
+========================================= */
+
+function startListening() {
+
+  if (busy) return;
+
+  const SpeechRecognition =
+
+    window.SpeechRecognition ||
+
+    window.webkitSpeechRecognition;
+
+
+  if (!SpeechRecognition) {
+
+    answer.textContent =
+      "La reconnaissance vocale n’est pas prise en charge par ce navigateur.";
+
+    return;
+
+  }
+
+
+  const recognition =
+    new SpeechRecognition();
+
+
+  recognition.lang =
+    "fr-FR";
+
+  recognition.interimResults =
+    true;
+
+  recognition.continuous =
+    false;
+
+
+  orb.classList.add(
+    "listening"
+  );
+
+  headline.textContent =
+    "Je t’écoute…";
+
+  status.textContent =
+    "Écoute";
+
+  answer.textContent =
+    "";
+
+
+  recognition.start();
+
+
+  recognition.onresult =
+    event => {
+
+      let transcript =
+        "";
+
+
+      for (
+
+        let i =
+          event.resultIndex;
+
+        i <
+          event.results.length;
+
+        i++
+
+      ) {
+
+        transcript +=
+          event
+            .results[i][0]
+            .transcript;
+
+      }
+
+
+      answer.textContent =
+        transcript;
+
+
+      const finalResult =
+
+        event.results[
+          event.results.length - 1
+        ];
+
+
+      if (
+        finalResult.isFinal
+      ) {
+
+        input.value =
+          transcript;
+
+        orb.classList.remove(
+          "listening"
+        );
+
+        sendMessage();
+
+      }
+
+    };
+
+
+  recognition.onerror =
+    () => {
+
+      orb.classList.remove(
+        "listening"
+      );
+
+      headline.textContent =
+        "Vince";
+
+      status.textContent =
+        "Disponible";
+
+      answer.textContent =
+        "Je n’ai pas bien entendu.";
+
+    };
+
+
+  recognition.onend =
+    () => {
+
+      orb.classList.remove(
+        "listening"
+      );
+
+      if (!busy) {
+
+        status.textContent =
+          "Disponible";
+
+      }
+
+    };
+
+}
+
+
+/* =========================================
+   STARTUP
+========================================= */
+
+setTimeout(
+  () => {
+
+    input.focus();
+
+  },
+  500
+);
+
+</script>
+
+</body>
+</html>
